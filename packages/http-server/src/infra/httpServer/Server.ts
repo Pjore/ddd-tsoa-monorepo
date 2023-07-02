@@ -1,4 +1,4 @@
-import { Application, RequestHandler } from 'express';
+import { Application } from 'express';
 import express from 'express';
 import cors from 'cors';
 import timeout from 'connect-timeout';
@@ -12,7 +12,6 @@ import { IConfiguration } from '../../configurationLoader';
 import { Request, Response, Next } from './Http';
 import app1Middleware from './middleware';
 import * as swaggerUi from "swagger-ui-express";
-import * as path from 'path';
 
 export class Server {
   server: HttpServer;
@@ -62,8 +61,6 @@ export class Server {
     }
 
     RouterService.RegisterRoutes(this.app);
-
-    this.app.use('/assets', express.static(path.join(__dirname, '../../../../../apps/app1/src/assets')));
 
     // Manage exceptions
     this.app.use(async (err: any, req: Request, res: Response, next: Next) => app1Middleware.exceptions.handleError(err, req, res, next));

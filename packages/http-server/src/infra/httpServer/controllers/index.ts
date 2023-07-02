@@ -5,8 +5,8 @@
 export interface IControllers {
 }
 
-function getapp1Controllers(): IControllers {
+function getCommonControllers(): IControllers {
     return {};
 }
 
-export default getapp1Controllers()
+export default getCommonControllers()

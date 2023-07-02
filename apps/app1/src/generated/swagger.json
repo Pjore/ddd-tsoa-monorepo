@@ -436,7 +436,7 @@
 							},
 							"example": {
 								"email": "admin@mrbesserwisser.com",
-								"password": "testpw123"
+								"password": "string"
 							}
 						}
 					}

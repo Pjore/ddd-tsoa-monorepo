@@ -19,7 +19,7 @@ export function getProductToken(accountId: string, taskId: string, productId: st
 		taskId: taskId,
 		accountId: accountId,
 		productId: productId,
-		scopes: [ ...scopes, 'task.write']	//Append task scope to allow operations within Providers
+		scopes: [ ...scopes, 'task.write']	
 	};
 	const jwt = generateJWT(locals, process.env.SECRET_AUTH);
 	return { ...locals, token: jwt };
