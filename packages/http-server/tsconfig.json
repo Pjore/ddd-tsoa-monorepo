@@ -1,0 +1,8 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "typeRoots" : ["./node_modules/@types", "./src/@types"]
+
+  }
+}

@@ -1,0 +1,533 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"Status": {
+				"type": "string",
+				"enum": [
+					"none",
+					"active",
+					"inactive",
+					"error",
+					"failure",
+					"partial",
+					"pending",
+					"paused",
+					"success"
+				]
+			},
+			"FlattenProperties_IAccount_": {
+				"properties": {
+					"status": {
+						"$ref": "#/components/schemas/Status"
+					}
+				},
+				"type": "object"
+			},
+			"AccountAsObject": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/FlattenProperties_IAccount_"
+					},
+					{
+						"properties": {
+							"updatedAt": {
+								"type": "string"
+							},
+							"createdAt": {
+								"type": "string"
+							},
+							"id": {
+								"type": "string"
+							}
+						},
+						"type": "object"
+					}
+				]
+			},
+			"Scope": {
+				"type": "string",
+				"enum": [
+					"admin",
+					"account.admin",
+					"account.write",
+					"account.read",
+					"user.read",
+					"user.write",
+					"user.admin",
+					"task.write"
+				]
+			},
+			"FlattenProperties_IUser_": {
+				"properties": {
+					"password": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					},
+					"scopes": {
+						"items": {
+							"$ref": "#/components/schemas/Scope"
+						},
+						"type": "array"
+					},
+					"email": {
+						"type": "string"
+					},
+					"accountId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"accountId"
+				],
+				"type": "object"
+			},
+			"UserAsObject": {
+				"allOf": [
+					{
+						"$ref": "#/components/schemas/FlattenProperties_IUser_"
+					},
+					{
+						"properties": {
+							"updatedAt": {
+								"type": "string"
+							},
+							"createdAt": {
+								"type": "string"
+							},
+							"id": {
+								"type": "string"
+							}
+						},
+						"type": "object"
+					}
+				]
+			},
+			"SignUpAsInputObject": {
+				"properties": {
+					"validationCode": {
+						"type": "string"
+					},
+					"validationToken": {
+						"type": "string"
+					},
+					"account": {
+						"properties": {
+							"name": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"name"
+						],
+						"type": "object"
+					},
+					"user": {
+						"properties": {
+							"password": {
+								"type": "string"
+							},
+							"email": {
+								"type": "string"
+							},
+							"lastName": {
+								"type": "string"
+							},
+							"firstName": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"password",
+							"email",
+							"lastName",
+							"firstName"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"validationCode",
+					"validationToken",
+					"account",
+					"user"
+				],
+				"type": "object"
+			},
+			"ISignInResult": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					},
+					"accountId": {
+						"type": "string"
+					},
+					"productId": {
+						"type": "string"
+					},
+					"groupId": {
+						"type": "string"
+					},
+					"taskId": {
+						"type": "string"
+					},
+					"scopes": {
+						"items": {
+							"$ref": "#/components/schemas/Scope"
+						},
+						"type": "array"
+					},
+					"token": {
+						"type": "string"
+					},
+					"orderId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"accountId",
+					"token"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SignInDTO": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"password"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_FlattenProperties_IUser_.Exclude_keyofFlattenProperties_IUser_.status__": {
+				"properties": {
+					"accountId": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"scopes": {
+						"items": {
+							"$ref": "#/components/schemas/Scope"
+						},
+						"type": "array"
+					},
+					"password": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_FlattenProperties_IUser_.status_": {
+				"$ref": "#/components/schemas/Pick_FlattenProperties_IUser_.Exclude_keyofFlattenProperties_IUser_.status__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"UserAsInputObject": {
+				"$ref": "#/components/schemas/Omit_FlattenProperties_IUser_.status_"
+			}
+		},
+		"securitySchemes": {
+			"bearerAuth": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		}
+	},
+	"info": {
+		"title": "@pjore/app1",
+		"version": "1.0.0",
+		"description": "DigitalOffice app1 is the main backend of DigitalOffice. It provides an API with primary purpose to serve the DigitalOffice app (ie. the frontend). To use the API you need to authenticate using public/signin endpoint. This will generate an token that needs to be passed as bearer token in every request",
+		"contact": {
+			"name": "Per Linde"
+		}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/account": {
+			"get": {
+				"operationId": "GetListOfAccounts",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/AccountAsObject"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get list of accounts based on provided query",
+				"tags": [
+					"Account"
+				],
+				"security": [
+					{
+						"bearerAuth": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"description": "JSON object with filter properties",
+						"in": "query",
+						"name": "query",
+						"required": true,
+						"schema": {
+							"type": "string"
+						},
+						"example": {
+							"country": "SE"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "AddAccount",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AccountAsObject"
+								}
+							}
+						}
+					}
+				},
+				"description": "Create an account is only available for MSPs",
+				"tags": [
+					"Account"
+				],
+				"security": [
+					{
+						"bearerAuth": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"description": "See schema for mandatory properties",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"description": "See schema for mandatory properties"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/public/signup": {
+			"post": {
+				"operationId": "Signup",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"token": {
+											"type": "string"
+										},
+										"user": {
+											"$ref": "#/components/schemas/UserAsObject"
+										},
+										"account": {
+											"$ref": "#/components/schemas/AccountAsObject"
+										}
+									},
+									"required": [
+										"token",
+										"user",
+										"account"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "Create new account and the administrator user",
+				"tags": [
+					"Public"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SignUpAsInputObject"
+							},
+							"example": {
+								"validationCode": "1234",
+								"validationToken": "string",
+								"account": {
+									"name": "Company name"
+								},
+								"user": {
+									"password": "string",
+									"email": "john@doe.int",
+									"lastName": "Doe",
+									"firstName": "John"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/public/signin": {
+			"post": {
+				"operationId": "Signin",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ISignInResult"
+								}
+							}
+						}
+					}
+				},
+				"description": "The standard user password sign in endpoint. Pass the generated token as bearer token in sequential requests",
+				"tags": [
+					"Public"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SignInDTO"
+							},
+							"example": {
+								"email": "admin@mrbesserwisser.com",
+								"password": "testpw123"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user": {
+			"get": {
+				"operationId": "GetListOfUsers",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/UserAsObject"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "[Internal] Query all users",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"bearerAuth": [
+							"admin"
+						]
+					}
+				],
+				"parameters": [
+					{
+						"description": "Query representation of a user. Mongoose filter properties are supported",
+						"in": "query",
+						"name": "query",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "AddUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/UserAsObject"
+								}
+							}
+						}
+					}
+				},
+				"description": "Create new user and add to account",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"bearerAuth": [
+							"account.write"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"description": "JSON representation of a User",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserAsInputObject",
+								"description": "JSON representation of a User"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/api/v1"
+		}
+	]
+}

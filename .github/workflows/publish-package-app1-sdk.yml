@@ -1,0 +1,41 @@
+name: Publish package of app1-sdk
+
+on:
+  push:
+    branches:
+    - main
+    paths:
+    - packages/app1-sdk/**
+  workflow_dispatch:
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    defaults:
+      run:
+        working-directory: packages/app1-sdk
+    steps:
+    - name: "Checkout source code"
+      uses: "actions/checkout@v3"
+    - name: "Bump version"
+      uses: "phips28/gh-action-bump-version@master"
+      id: version-bump
+      with:
+        PACKAGEJSON_DIR: packages/app1-sdk
+        skip-tag: true
+      env:
+        skip-tag: true
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # Setup .npmrc file to publish to GitHub Packages
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '16.x'
+        registry-url: 'https://npm.pkg.github.com'
+        # Defaults to the user or organization that owns the workflow file
+        scope: '@pjore'
+    - run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

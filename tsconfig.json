@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2019",
+    "lib": ["es2019", "es2020.promise", "es2020.bigint", "es2020.string"],
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noEmitOnError": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "types": [],
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "@pjore/common/*": ["packages/common/src/*"],
+      "@pjore/http-server/*": ["packages/http-server/src/*"],
+      "@pjore/app1-sdk/*": ["packages/app1-sdk/src/*"],
+      "@pjore/app1/*": ["apps/app1/src/*"],
+    },
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "noErrorTruncation": true
+  }
+}

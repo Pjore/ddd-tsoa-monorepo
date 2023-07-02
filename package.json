@@ -1,0 +1,25 @@
+{
+  "name": "ddd-tsoa-monorepo",
+  "description": "Template repo and example",
+  "version": "0.7.8",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "clean": "rimraf -rf ./dist",
+    "build": "npm run build:app1",
+    "build:app1": "npm run clean && yarn --cwd apps/app1 build",
+    "start": "node dist/apps/app1/src/index.js",
+    "dev:app1": "yarn --cwd apps/app1 dev",
+    "dev": "yarn run dev:app1"
+  },
+  "devDependencies": {
+    "rimraf": "^3.0.2",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "tsoa": "^5.1.1"
+  }
+}
